@@ -1,0 +1,184 @@
+<resources>
+    <string name="app_name">KampusRide</string>
+    <string name="univ_name">UNIVERSITAS MALIKUSSALEH</string>
+    <string name="tagline">Layanan bus kampus dan antar-jemput mahasiswa</string>
+    <string name="cd_logo">Logo Universitas Malikussaleh</string>
+    <string name="loading">Memuat data…</string>
+    <string name="btn_retry">Coba lagi</string>
+    <string name="btn_cancel">Batal</string>
+    <string name="cd_back">Kembali</string>
+
+    <!-- Navigasi -->
+    <string name="nav_home">Beranda</string>
+    <string name="nav_schedule">Jadwal</string>
+    <string name="nav_ticket">Tiket</string>
+    <string name="nav_profile">Profil</string>
+
+    <!-- Autentikasi -->
+    <string name="login_title">Selamat Datang!</string>
+    <string name="login_subtitle">Masuk untuk melanjutkan ke KampusRide</string>
+    <string name="register_title">Buat Akun Baru</string>
+    <string name="register_subtitle">Isi data mahasiswa dengan benar.</string>
+    <string name="hint_email">Email mahasiswa</string>
+    <string name="hint_password">Kata sandi</string>
+    <string name="hint_confirm_password">Konfirmasi kata sandi</string>
+    <string name="hint_name">Nama lengkap</string>
+    <string name="hint_nim">NIM</string>
+    <string name="hint_prodi">Program studi</string>
+    <string name="btn_login">Masuk</string>
+    <string name="btn_register">Daftar</string>
+    <string name="login_no_account">Belum punya akun? Daftar</string>
+    <string name="register_have_account">Sudah punya akun? Masuk</string>
+    <string name="forgot_password">Lupa kata sandi?</string>
+    <string name="reset_email_sent">Tautan reset kata sandi sudah dikirim ke email kamu.</string>
+    <string name="reset_need_email">Isi email yang valid terlebih dahulu.</string>
+
+    <!-- Validasi -->
+    <string name="err_required">Kolom ini wajib diisi</string>
+    <string name="err_email_invalid">Format email tidak valid</string>
+    <string name="err_password_short">Kata sandi minimal 6 karakter</string>
+    <string name="err_password_mismatch">Konfirmasi kata sandi tidak sama</string>
+    <string name="err_nim_invalid">NIM harus berupa angka 8–15 digit</string>
+    <string name="err_pickup_same">Titik jemput dan tujuan tidak boleh sama</string>
+    <string name="err_seat_required">Pilih kursi terlebih dahulu</string>
+
+    <!-- Pesan error -->
+    <string name="error_timeout">Permintaan terlalu lama. Periksa koneksi internet lalu coba lagi.</string>
+    <string name="error_network">Tidak ada koneksi internet. Periksa jaringan kamu lalu coba lagi.</string>
+    <string name="error_weak_password">Kata sandi terlalu lemah. Gunakan minimal 6 karakter.</string>
+    <string name="error_email_exists">Email ini sudah terdaftar. Silakan masuk.</string>
+    <string name="error_user_not_found">Akun dengan email ini tidak ditemukan.</string>
+    <string name="error_invalid_credentials">Email atau kata sandi salah.</string>
+    <string name="error_too_many_requests">Terlalu banyak percobaan. Coba lagi beberapa saat lagi.</string>
+    <string name="error_seat_taken">Kursi tersebut baru saja dipesan orang lain. Silakan pilih kursi lain.</string>
+    <string name="error_permission_denied">Akses ke data ditolak. Coba masuk ulang.</string>
+    <string name="error_unknown">Terjadi kesalahan. Silakan coba lagi.</string>
+    <string name="error_no_maps_app">Aplikasi peta tidak ditemukan di perangkat ini.</string>
+    <string name="error_not_logged_in">Sesi login berakhir. Silakan masuk kembali.</string>
+    <string name="error_schedule_not_found">Jadwal tidak ditemukan.</string>
+    <string name="error_booking_not_found">Pemesanan tidak ditemukan.</string>
+
+    <!-- Beranda -->
+    <string name="home_greeting">Halo, %1$s!</string>
+    <string name="home_greeting_default">Halo, Mahasiswa!</string>
+    <string name="home_subtitle">Mau ke mana hari ini?</string>
+    <string name="home_active_ticket">TIKET AKTIF</string>
+    <string name="home_no_ticket">Belum ada tiket aktif. Pesan bus pertamamu sekarang!</string>
+    <string name="btn_order_bus">Pesan Bus</string>
+    <string name="home_nearest">Jadwal Terdekat</string>
+
+    <!-- Jadwal -->
+    <string name="schedule_title">Jadwal Bus</string>
+    <string name="search_schedule_hint">Cari wilayah, titik jemput, atau kampus</string>
+    <string name="chip_all">Semua</string>
+    <string name="schedule_empty">Belum ada jadwal tersedia.</string>
+    <string name="search_not_found">Data tidak ditemukan. Coba kata kunci atau tanggal lain.</string>
+    <string name="route_format">%1$s → %2$s</string>
+    <string name="bus_capacity_format">%1$s • %2$d kursi</string>
+    <string name="time_format">%1$s WIB</string>
+    <string name="schedule_detail_title">Detail Jadwal</string>
+    <string name="label_route">Rute</string>
+    <string name="label_date">Tanggal</string>
+    <string name="label_time">Jam berangkat</string>
+    <string name="label_bus">Bus</string>
+    <string name="label_seats_left">Kursi tersedia</string>
+    <string name="seats_left_format">%1$d dari %2$d kursi</string>
+    <string name="btn_book">Pesan Tiket</string>
+    <string name="btn_my_location">Lokasi saya</string>
+    <string name="btn_open_maps">Buka di Google Maps</string>
+    <string name="location_denied">Izin lokasi ditolak. Peta tetap menampilkan rute bus.</string>
+    <string name="schedule_full">Kursi penuh</string>
+    <string name="schedule_past">Jadwal sudah lewat</string>
+    <string name="map_title">Peta rute</string>
+
+    <!-- Pemesanan -->
+    <string name="booking_title_new">Pesan Tiket</string>
+    <string name="booking_title_edit">Ubah Pemesanan</string>
+    <string name="hint_pickup">Titik penjemputan</string>
+    <string name="hint_destination">Tujuan</string>
+    <string name="hint_pickup_address">Nama kost / alamat rumah (opsional)</string>
+    <string name="helper_pickup_address">Contoh: Kost Melati, Jl. Pendidikan No. 5</string>
+    <string name="label_pickup_address">Alamat jemput</string>
+    <string name="label_choose_seat">Pilih kursi</string>
+    <string name="seat_available">Tersedia</string>
+    <string name="seat_selected">Dipilih</string>
+    <string name="seat_taken">Terisi</string>
+    <string name="selected_seat_format">Kursi dipilih: %1$s</string>
+    <string name="no_seat_selected">Belum ada kursi dipilih</string>
+    <string name="btn_confirm_booking">Konfirmasi Pemesanan</string>
+    <string name="btn_save_changes">Simpan Perubahan</string>
+    <string name="booking_created">Pemesanan berhasil! Tiket kamu sudah terbit.</string>
+    <string name="booking_updated">Pemesanan berhasil diperbarui.</string>
+    <string name="booking_deleted">Pemesanan dihapus.</string>
+
+    <!-- Tiket -->
+    <string name="ticket_title">Tiket Saya</string>
+    <string name="search_ticket_hint">Cari kode tiket atau rute</string>
+    <string name="ticket_empty">Belum ada tiket. Pesan bus dari menu Jadwal.</string>
+    <string name="ticket_detail_title">Tiket Digital</string>
+    <string name="label_ticket_code">KODE TIKET</string>
+    <string name="label_pickup">Penjemputan</string>
+    <string name="label_destination">Tujuan</string>
+    <string name="label_seat">Kursi</string>
+    <string name="btn_edit">Ubah</string>
+    <string name="btn_delete">Hapus</string>
+    <string name="delete_title">Hapus pemesanan?</string>
+    <string name="delete_message">Pemesanan %1$s akan dihapus dan kursinya dilepas. Tindakan ini tidak dapat dibatalkan.</string>
+    <string name="btn_yes_delete">Ya, hapus</string>
+    <string name="status_done">Selesai</string>
+    <string name="ticket_seat_format">Kursi %1$s</string>
+    <string name="date_time_format">%1$s • %2$s</string>
+
+    <!-- Profil -->
+    <string name="profile_title">Profil</string>
+    <string name="label_name">Nama</string>
+    <string name="label_nim">NIM</string>
+    <string name="label_email">Email</string>
+    <string name="label_prodi">Program studi</string>
+    <string name="btn_logout">Keluar</string>
+    <string name="logout_title">Keluar dari akun?</string>
+    <string name="logout_message">Kamu perlu masuk lagi untuk memesan bus.</string>
+    <string name="btn_yes_logout">Ya, keluar</string>
+
+    <!-- Notifikasi -->
+    <string name="notif_channel_name">Pemesanan bus</string>
+    <string name="notif_title">Tiket KampusRide terbit</string>
+    <string name="notif_text_format">Kode %1$s • Kursi %2$s • %3$s</string>
+    <string name="splash_subtitle">Bus Mahasiswa UNIMAL</string>
+    <string name="splash_slogan">Kuliah Lebih Mudah,\nPerjalanan Lebih Nyaman</string>
+    <string name="chip_timur">Koridor Timur</string>
+    <string name="chip_barat">Koridor Barat</string>
+    <string name="schedule_tip">Pilih koridor sesuai lokasi tempat tinggal Anda.</string>
+    <string name="label_depart_pergi">Jam Jemput</string>
+    <string name="label_depart_pulang">Berangkat dari Kampus</string>
+    <string name="label_arrive">Estimasi Tiba</string>
+    <string name="label_stops_pergi">Titik Jemput</string>
+    <string name="label_stops_pulang">Titik Turun</string>
+    <string name="direction_pergi">Pergi</string>
+    <string name="direction_pulang">Pulang</string>
+    <string name="btn_book_now">Pesan Sekarang</string>
+    <string name="badge_format">K%1$d</string>
+    <string name="subtitle_to">→ %1$s</string>
+    <string name="meta_format">%1$s • %2$s</string>
+    <string name="hint_stop_pergi">Titik Jemput (Asal)</string>
+    <string name="hint_stop_pulang">Titik Turun</string>
+    <string name="hint_campus_pergi">Kampus Tujuan</string>
+    <string name="hint_campus_pulang">Kampus Asal</string>
+    <string name="err_stop_required">Pilih titik terlebih dahulu</string>
+    <string name="label_fee">Total Pembayaran</string>
+    <string name="fee_free">Rp 0 (gratis untuk mahasiswa)</string>
+    <string name="booking_success_title">Pemesanan Berhasil!</string>
+    <string name="booking_success_msg">Tiket Anda telah berhasil dipesan. Silakan tunjukkan QR Code kepada petugas saat naik bus.</string>
+    <string name="label_ticket_code_short">Kode Tiket</string>
+    <string name="btn_view_ticket">Lihat Tiket</string>
+    <string name="btn_back_home">Kembali ke Beranda</string>
+    <string name="label_route_code">Rute</string>
+    <string name="label_stop_time">Jam</string>
+    <string name="ticket_brand">KampusRide</string>
+    <string name="cd_qr">QR Code tiket</string>
+    <string name="cd_success">Berhasil</string>
+    <string name="stop_time_format">%1$s WIB</string>
+    <string name="schedule_seats_left">%1$d kursi tersedia</string>
+    <string name="nim_format">NIM. %1$s</string>
+    <string name="stop_option_format">%1$s – %2$s WIB</string>
+</resources>
