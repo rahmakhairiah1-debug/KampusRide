@@ -1,0 +1,37 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    // Profil: hanya pemilik
+    match /users/{uid} {
+      allow read, write: if signedIn() && request.auth.uid == uid;
+    }
+
+    // Data bus & jadwal: dibaca semua pengguna login.
+    // (Ditulis oleh aplikasi saat pengisian data awal. Untuk produksi, batasi ke admin.)
+    match /buses/{id} {
+      allow read, write: if signedIn();
+    }
+    match /schedules/{id} {
+      allow read, write: if signedIn();
+    }
+
+    // Pemesanan: setiap pengguna hanya bisa mengakses miliknya sendiri
+    match /bookings/{id} {
+      allow create: if signedIn() && request.resource.data.userId == request.auth.uid;
+      allow read, update, delete: if signedIn() && resource.data.userId == request.auth.uid;
+    }
+
+    // Kunci kursi: semua pengguna login boleh membaca (untuk tahu kursi terisi),
+    // tetapi hanya pemilik yang bisa membuat/menghapus kuncinya
+    match /seats/{id} {
+      allow read: if signedIn();
+      allow create: if signedIn() && request.resource.data.userId == request.auth.uid;
+      allow delete: if signedIn() && resource.data.userId == request.auth.uid;
+    }
+  }
+}
