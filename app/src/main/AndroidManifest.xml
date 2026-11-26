@@ -25,6 +25,9 @@
         <activity android:name=".ui.auth.RegisterActivity" android:exported="false" />
         <activity android:name=".MainActivity" android:exported="false" />
         <activity android:name=".ui.schedule.ScheduleDetailActivity" android:exported="false" />
+        <activity android:name=".ui.booking.BookingActivity" android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".ui.booking.BookingSuccessActivity" android:exported="false" />
 
     </application>
 

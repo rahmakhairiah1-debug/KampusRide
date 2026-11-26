@@ -1,5 +1,6 @@
 package com.example.kampusride.ui.schedule
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import com.example.kampusride.R
@@ -7,6 +8,7 @@ import com.example.kampusride.data.model.Schedule
 import com.example.kampusride.databinding.ActivityScheduleDetailBinding
 import com.example.kampusride.databinding.ItemStopBinding
 import com.example.kampusride.ui.BaseActivity
+import com.example.kampusride.ui.booking.BookingActivity
 import com.example.kampusride.util.DateUtil
 import com.example.kampusride.util.Extras
 import com.example.kampusride.util.UiState
@@ -31,8 +33,12 @@ class ScheduleDetailActivity : BaseActivity() {
 
         binding.toolbar.setNavigationOnClickListener { finish() }
         binding.btnRetry.setOnClickListener { viewModel.load(scheduleId) }
-        // Tombol pesan diaktifkan pada tahap pemesanan
-        binding.btnBook.setVisible(false)
+        binding.btnBook.setOnClickListener {
+            startActivity(
+                Intent(this, BookingActivity::class.java)
+                    .putExtra(Extras.SCHEDULE_ID, scheduleId)
+            )
+        }
 
         viewModel.state.observe(this) { state ->
             binding.progressBar.setVisible(state is UiState.Loading)
