@@ -16,6 +16,9 @@ import com.example.kampusride.ui.schedule.ScheduleAdapter
 import com.example.kampusride.ui.schedule.ScheduleListItem
 import com.example.kampusride.ui.schedule.ScheduleDetailActivity
 import com.example.kampusride.ui.schedule.ScheduleViewModel
+import com.example.kampusride.ui.ticket.TicketDetailActivity
+import com.example.kampusride.ui.ticket.TicketViewModel
+import com.example.kampusride.util.DateUtil
 import com.example.kampusride.util.Extras
 import com.example.kampusride.util.UiState
 import com.example.kampusride.util.setVisible
@@ -26,6 +29,7 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val profileViewModel: ProfileViewModel by activityViewModels()
+    private val ticketViewModel: TicketViewModel by activityViewModels()
     private val scheduleViewModel: ScheduleViewModel by activityViewModels()
 
     private val adapter = ScheduleAdapter { schedule ->
@@ -57,6 +61,30 @@ class HomeFragment : Fragment() {
             if (state is UiState.Success && state.data.nama.isNotBlank()) {
                 val firstName = state.data.nama.trim().split(" ").first()
                 binding.tvGreeting.text = getString(R.string.home_greeting, firstName)
+            }
+        }
+
+        ticketViewModel.activeTicket.observe(viewLifecycleOwner) { ticket ->
+            if (ticket == null) {
+                binding.tvActiveTitle.setText(R.string.home_no_ticket)
+                binding.tvActiveDetail.setVisible(false)
+                binding.cardActive.setOnClickListener(null)
+                binding.cardActive.isClickable = false
+            } else {
+                binding.tvActiveTitle.text =
+                    getString(R.string.route_format, ticket.pickupPoint, ticket.destination)
+                binding.tvActiveDetail.text = getString(
+                    R.string.date_time_format,
+                    DateUtil.pretty(ticket.travelDate),
+                    getString(R.string.ticket_seat_format, ticket.seatNumber)
+                ) + " • " + ticket.departureTime
+                binding.tvActiveDetail.setVisible(true)
+                binding.cardActive.setOnClickListener {
+                    startActivity(
+                        Intent(requireContext(), TicketDetailActivity::class.java)
+                            .putExtra(Extras.BOOKING_ID, ticket.bookingId)
+                    )
+                }
             }
         }
 

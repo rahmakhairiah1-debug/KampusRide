@@ -28,6 +28,7 @@
         <activity android:name=".ui.booking.BookingActivity" android:exported="false"
             android:windowSoftInputMode="adjustResize" />
         <activity android:name=".ui.booking.BookingSuccessActivity" android:exported="false" />
+        <activity android:name=".ui.ticket.TicketDetailActivity" android:exported="false" />
 
     </application>
 

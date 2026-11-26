@@ -5,6 +5,7 @@ import android.os.Bundle
 import com.example.kampusride.MainActivity
 import com.example.kampusride.databinding.ActivityBookingSuccessBinding
 import com.example.kampusride.ui.BaseActivity
+import com.example.kampusride.ui.ticket.TicketDetailActivity
 import com.example.kampusride.util.Extras
 import com.example.kampusride.util.applySystemBarsPadding
 
@@ -17,10 +18,15 @@ class BookingSuccessActivity : BaseActivity() {
         setContentView(binding.root)
         binding.root.applySystemBarsPadding()
 
+        val bookingId = intent.getStringExtra(Extras.BOOKING_ID).orEmpty()
         binding.tvTicketCode.text = intent.getStringExtra(Extras.TICKET_CODE).orEmpty()
 
-        // Halaman tiket tersedia pada tahap berikutnya
-        binding.btnViewTicket.setOnClickListener { goHome() }
+        binding.btnViewTicket.setOnClickListener {
+            startActivity(
+                Intent(this, TicketDetailActivity::class.java).putExtra(Extras.BOOKING_ID, bookingId)
+            )
+            finish()
+        }
         binding.btnHome.setOnClickListener { goHome() }
     }
 

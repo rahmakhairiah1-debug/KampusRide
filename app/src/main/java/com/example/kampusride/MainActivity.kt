@@ -16,11 +16,14 @@ import com.example.kampusride.ui.auth.LoginActivity
 import com.example.kampusride.ui.home.HomeFragment
 import com.example.kampusride.ui.profile.ProfileFragment
 import com.example.kampusride.ui.schedule.ScheduleFragment
+import com.example.kampusride.ui.ticket.TicketFragment
+import com.example.kampusride.ui.ticket.TicketViewModel
 import com.example.kampusride.util.applySystemBarsPadding
 
 class MainActivity : BaseActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    private val ticketViewModel: TicketViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +47,7 @@ class MainActivity : BaseActivity() {
             val fragment: Fragment = when (item.itemId) {
                 R.id.nav_home -> HomeFragment()
                 R.id.nav_schedule -> ScheduleFragment()
+                R.id.nav_ticket -> TicketFragment()
                 R.id.nav_profile -> ProfileFragment()
                 else -> return@setOnItemSelectedListener false
             }
@@ -57,6 +61,12 @@ class MainActivity : BaseActivity() {
         if (savedInstanceState == null) {
             binding.bottomNavigation.selectedItemId = R.id.nav_home
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // Segarkan tiket setiap kembali ke layar utama (setelah pesan / ubah / hapus)
+        if (AuthRepository().isLoggedIn()) ticketViewModel.refresh()
     }
 
     fun navigateTo(menuId: Int) {
