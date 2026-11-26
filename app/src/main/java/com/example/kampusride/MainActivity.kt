@@ -15,6 +15,7 @@ import com.example.kampusride.ui.BaseActivity
 import com.example.kampusride.ui.auth.LoginActivity
 import com.example.kampusride.ui.home.HomeFragment
 import com.example.kampusride.ui.profile.ProfileFragment
+import com.example.kampusride.ui.schedule.ScheduleFragment
 import com.example.kampusride.util.applySystemBarsPadding
 
 class MainActivity : BaseActivity() {
@@ -42,6 +43,7 @@ class MainActivity : BaseActivity() {
         binding.bottomNavigation.setOnItemSelectedListener { item ->
             val fragment: Fragment = when (item.itemId) {
                 R.id.nav_home -> HomeFragment()
+                R.id.nav_schedule -> ScheduleFragment()
                 R.id.nav_profile -> ProfileFragment()
                 else -> return@setOnItemSelectedListener false
             }

@@ -1,14 +1,22 @@
 package com.example.kampusride.ui.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.kampusride.MainActivity
 import com.example.kampusride.R
 import com.example.kampusride.databinding.FragmentHomeBinding
 import com.example.kampusride.ui.profile.ProfileViewModel
+import com.example.kampusride.ui.schedule.ScheduleAdapter
+import com.example.kampusride.ui.schedule.ScheduleListItem
+import com.example.kampusride.ui.schedule.ScheduleDetailActivity
+import com.example.kampusride.ui.schedule.ScheduleViewModel
+import com.example.kampusride.util.Extras
 import com.example.kampusride.util.UiState
 import com.example.kampusride.util.setVisible
 
@@ -18,6 +26,14 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val profileViewModel: ProfileViewModel by activityViewModels()
+    private val scheduleViewModel: ScheduleViewModel by activityViewModels()
+
+    private val adapter = ScheduleAdapter { schedule ->
+        startActivity(
+            Intent(requireContext(), ScheduleDetailActivity::class.java)
+                .putExtra(Extras.SCHEDULE_ID, schedule.scheduleId)
+        )
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,11 +47,11 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Tombol pesan dan daftar jadwal terdekat diaktifkan pada tahap berikutnya
-        binding.btnOrder.setVisible(false)
-        binding.progressNearest.setVisible(false)
-        binding.tvNearestEmpty.setText(R.string.schedule_empty)
-        binding.tvNearestEmpty.setVisible(true)
+        binding.rvNearest.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvNearest.adapter = adapter
+        binding.btnOrder.setOnClickListener {
+            (requireActivity() as MainActivity).navigateTo(R.id.nav_schedule)
+        }
 
         profileViewModel.state.observe(viewLifecycleOwner) { state ->
             if (state is UiState.Success && state.data.nama.isNotBlank()) {
@@ -43,9 +59,30 @@ class HomeFragment : Fragment() {
                 binding.tvGreeting.text = getString(R.string.home_greeting, firstName)
             }
         }
+
+        scheduleViewModel.state.observe(viewLifecycleOwner) { state ->
+            binding.progressNearest.setVisible(state is UiState.Loading)
+            when (state) {
+                is UiState.Error -> {
+                    binding.tvNearestEmpty.text = state.message
+                    binding.tvNearestEmpty.setVisible(true)
+                    adapter.submitList(emptyList())
+                }
+                else -> binding.tvNearestEmpty.setVisible(false)
+            }
+        }
+
+        scheduleViewModel.allSchedules.observe(viewLifecycleOwner) { list ->
+            adapter.submitList(ScheduleListItem.rows(list.take(3)))
+            if (list.isEmpty() && scheduleViewModel.state.value is UiState.Success) {
+                binding.tvNearestEmpty.setText(R.string.schedule_empty)
+                binding.tvNearestEmpty.setVisible(true)
+            }
+        }
     }
 
     override fun onDestroyView() {
+        binding.rvNearest.adapter = null
         _binding = null
         super.onDestroyView()
     }
