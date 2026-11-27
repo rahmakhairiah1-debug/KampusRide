@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.example.kampusride.R
 import com.example.kampusride.data.model.Booking
 import com.example.kampusride.databinding.ActivityTicketDetailBinding
@@ -11,19 +12,27 @@ import com.example.kampusride.ui.BaseActivity
 import com.example.kampusride.ui.booking.BookingActivity
 import com.example.kampusride.util.DateUtil
 import com.example.kampusride.util.Extras
+import com.example.kampusride.util.MapHelper
+import com.example.kampusride.util.MyLocationController
 import com.example.kampusride.util.QrUtil
 import com.example.kampusride.util.UiState
 import com.example.kampusride.util.applySystemBarsPadding
 import com.example.kampusride.util.setVisible
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import kotlinx.coroutines.Job
 
 class TicketDetailActivity : BaseActivity() {
 
     private lateinit var binding: ActivityTicketDetailBinding
     private val viewModel: TicketDetailViewModel by viewModels()
+    private val locationController = MyLocationController(this)
 
     private var bookingId: String = ""
+    private var googleMap: GoogleMap? = null
     private var currentBooking: Booking? = null
+    private var routeJob: Job? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,12 +44,23 @@ class TicketDetailActivity : BaseActivity() {
 
         binding.toolbar.setNavigationOnClickListener { finish() }
         binding.btnRetry.setOnClickListener { viewModel.load(bookingId) }
+        binding.btnMyLocation.setOnClickListener { locationController.request() }
+        binding.btnOpenMaps.setOnClickListener {
+            currentBooking?.let { MapHelper.openDirections(this, it.pickupPoint, it.destination) }
+        }
         binding.btnEdit.setOnClickListener {
             startActivity(
                 Intent(this, BookingActivity::class.java).putExtra(Extras.BOOKING_ID, bookingId)
             )
         }
         binding.btnDelete.setOnClickListener { confirmDelete() }
+
+        val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as? SupportMapFragment
+        mapFragment?.getMapAsync { map ->
+            googleMap = map
+            locationController.attach(map)
+            currentBooking?.let { drawRoute(it) }
+        }
 
         viewModel.booking.observe(this) { state ->
             binding.progressBar.setVisible(state is UiState.Loading)
@@ -111,6 +131,13 @@ class TicketDetailActivity : BaseActivity() {
 
         // Tiket yang perjalanannya sudah lewat tidak dapat diubah
         binding.btnEdit.isEnabled = !done
+        drawRoute(booking)
+    }
+
+    private fun drawRoute(booking: Booking) {
+        val map = googleMap ?: return
+        routeJob?.cancel()
+        routeJob = MapHelper.showRoute(lifecycleScope, this, map, booking.pickupPoint, booking.destination)
     }
 
     private fun confirmDelete() {

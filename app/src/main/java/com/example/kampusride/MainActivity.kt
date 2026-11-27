@@ -25,6 +25,10 @@ class MainActivity : BaseActivity() {
     private lateinit var binding: ActivityMainBinding
     private val ticketViewModel: TicketViewModel by viewModels()
 
+    // Izin notifikasi (Android 13+). Jika ditolak, aplikasi tetap berjalan normal.
+    private val notificationPermission =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -60,6 +64,7 @@ class MainActivity : BaseActivity() {
 
         if (savedInstanceState == null) {
             binding.bottomNavigation.selectedItemId = R.id.nav_home
+            requestNotificationPermissionIfNeeded()
         }
     }
 
@@ -71,5 +76,14 @@ class MainActivity : BaseActivity() {
 
     fun navigateTo(menuId: Int) {
         binding.bottomNavigation.selectedItemId = menuId
+    }
+
+    private fun requestNotificationPermissionIfNeeded() {
+        if (Build.VERSION.SDK_INT >= 33 &&
+            ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+            != PackageManager.PERMISSION_GRANTED
+        ) {
+            notificationPermission.launch(Manifest.permission.POST_NOTIFICATIONS)
+        }
     }
 }

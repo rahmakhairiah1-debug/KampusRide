@@ -3,6 +3,7 @@ package com.example.kampusride.ui.schedule
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.example.kampusride.R
 import com.example.kampusride.data.model.Schedule
 import com.example.kampusride.databinding.ActivityScheduleDetailBinding
@@ -11,17 +12,25 @@ import com.example.kampusride.ui.BaseActivity
 import com.example.kampusride.ui.booking.BookingActivity
 import com.example.kampusride.util.DateUtil
 import com.example.kampusride.util.Extras
+import com.example.kampusride.util.MapHelper
+import com.example.kampusride.util.MyLocationController
 import com.example.kampusride.util.UiState
 import com.example.kampusride.util.applySystemBarsPadding
 import com.example.kampusride.util.setVisible
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.SupportMapFragment
+import kotlinx.coroutines.Job
 
 class ScheduleDetailActivity : BaseActivity() {
 
     private lateinit var binding: ActivityScheduleDetailBinding
     private val viewModel: ScheduleDetailViewModel by viewModels()
+    private val locationController = MyLocationController(this)
 
     private var scheduleId: String = ""
+    private var googleMap: GoogleMap? = null
     private var currentSchedule: Schedule? = null
+    private var routeJob: Job? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,11 +42,25 @@ class ScheduleDetailActivity : BaseActivity() {
 
         binding.toolbar.setNavigationOnClickListener { finish() }
         binding.btnRetry.setOnClickListener { viewModel.load(scheduleId) }
+        binding.btnMyLocation.setOnClickListener { locationController.request() }
+        binding.btnOpenMaps.setOnClickListener {
+            currentSchedule?.let {
+                val names = pathNames(it)
+                MapHelper.openDirections(this, names.first(), names.last())
+            }
+        }
         binding.btnBook.setOnClickListener {
             startActivity(
                 Intent(this, BookingActivity::class.java)
                     .putExtra(Extras.SCHEDULE_ID, scheduleId)
             )
+        }
+
+        val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as? SupportMapFragment
+        mapFragment?.getMapAsync { map ->
+            googleMap = map
+            locationController.attach(map)
+            currentSchedule?.let { drawRoute(it) }
         }
 
         viewModel.state.observe(this) { state ->
@@ -88,7 +111,19 @@ class ScheduleDetailActivity : BaseActivity() {
         binding.btnBook.isEnabled = !past && !full
         binding.tvBookInfo.setVisible(past || full)
         binding.tvBookInfo.setText(if (past) R.string.schedule_past else R.string.schedule_full)
+
+        drawRoute(schedule)
     }
+
+    private fun drawRoute(schedule: Schedule) {
+        val map = googleMap ?: return
+        routeJob?.cancel()
+        routeJob = MapHelper.showPath(lifecycleScope, this, map, pathNames(schedule))
+    }
+
+    private fun pathNames(schedule: Schedule): List<String> =
+        if (schedule.outbound()) schedule.stops.map { it.name } + schedule.kampus
+        else listOf(schedule.kampus) + schedule.stops.map { it.name }
 
     /** Daftar titik jemput/turun berurutan (timeline) beserta jamnya. */
     private fun renderStops(schedule: Schedule) {

@@ -13,6 +13,7 @@ import com.example.kampusride.databinding.ActivityBookingBinding
 import com.example.kampusride.ui.BaseActivity
 import com.example.kampusride.util.DateUtil
 import com.example.kampusride.util.Extras
+import com.example.kampusride.util.Notifier
 import com.example.kampusride.util.UiState
 import com.example.kampusride.util.applySystemBarsPadding
 import com.example.kampusride.util.setVisible
@@ -161,6 +162,7 @@ class BookingActivity : BaseActivity() {
         if (editMode) {
             Toast.makeText(this, R.string.booking_updated, Toast.LENGTH_SHORT).show()
         } else {
+            Notifier.showBookingCreated(this, booking)
             startActivity(
                 Intent(this, BookingSuccessActivity::class.java)
                     .putExtra(Extras.BOOKING_ID, booking.bookingId)
